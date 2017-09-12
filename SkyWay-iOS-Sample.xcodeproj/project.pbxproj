@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1731811B1F6777DE00AF5EB1 /* SkyWay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1744EA4E1F4D76970041887B /* SkyWay.framework */; };
+		1731811C1F6777DE00AF5EB1 /* SkyWay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1744EA4E1F4D76970041887B /* SkyWay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1744EA3A1F4D74900041887B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1744EA391F4D74900041887B /* AppDelegate.swift */; };
 		1744EA3F1F4D74900041887B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1744EA3D1F4D74900041887B /* Main.storyboard */; };
 		1744EA411F4D74900041887B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1744EA401F4D74900041887B /* Images.xcassets */; };
@@ -31,6 +33,20 @@
 		1744EA711F4D78730041887B /* PeersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1744EA6D1F4D78730041887B /* PeersListViewController.swift */; };
 		1744EA761F4D79710041887B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1744EA741F4D79710041887B /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1731811D1F6777DE00AF5EB1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1731811C1F6777DE00AF5EB1 /* SkyWay.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1744EA361F4D74900041887B /* SkyWay-iOS-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SkyWay-iOS-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,7 +73,6 @@
 		1744EA6B1F4D78730041887B /* MediaConnectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaConnectionViewController.swift; sourceTree = "<group>"; };
 		1744EA6C1F4D78730041887B /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		1744EA6D1F4D78730041887B /* PeersListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeersListViewController.swift; sourceTree = "<group>"; };
-		1744EA731F4D78EC0041887B /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		1744EA751F4D79710041887B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +85,7 @@
 				1744EA561F4D76DC0041887B /* libsqlite3.tbd in Frameworks */,
 				1744EA551F4D76DC0041887B /* libicucore.tbd in Frameworks */,
 				1744EA541F4D76DC0041887B /* libc++.tbd in Frameworks */,
+				1731811B1F6777DE00AF5EB1 /* SkyWay.framework in Frameworks */,
 				1744EA651F4D773C0041887B /* CoreVideo.framework in Frameworks */,
 				1744EA691F4D773C0041887B /* VideoToolbox.framework in Frameworks */,
 				1744EA611F4D773C0041887B /* AudioToolbox.framework in Frameworks */,
@@ -143,7 +159,6 @@
 		1744EA721F4D78C50041887B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1744EA731F4D78EC0041887B /* Bridging-Header.h */,
 				1744EA4B1F4D76190041887B /* image.png */,
 				1744EA451F4D74900041887B /* Info.plist */,
 			);
@@ -160,6 +175,7 @@
 				1744EA321F4D74900041887B /* Sources */,
 				1744EA331F4D74900041887B /* Frameworks */,
 				1744EA341F4D74900041887B /* Resources */,
+				1731811D1F6777DE00AF5EB1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -359,7 +375,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ntt.SkyWay-iOS-Sample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT)SkyWay-iOS-Sample/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -378,7 +394,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ntt.SkyWay-iOS-Sample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT)SkyWay-iOS-Sample/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -402,6 +418,7 @@
 				1744EA4A1F4D74900041887B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

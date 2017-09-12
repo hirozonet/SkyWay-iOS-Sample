@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkyWay
 
 class DataConnectionViewController: UIViewController, UINavigationControllerDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UIPopoverPresentationControllerDelegate {
 
@@ -246,7 +247,6 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
         option.label = "chat"
         option.metadata = "{'message': 'hi'}"
         option.serialization = SKWSerializationEnum.SERIALIZATION_BINARY
-        option.reliable = true
         
         // connect
         if let peer = self.peer {
@@ -399,15 +399,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
         // !!!: DataEvent/Error
         _data.on(SKWDataConnectionEventEnum.DATACONNECTION_EVENT_ERROR) { (obj: NSObject?) in
             if let err = obj as? SKWPeerError {
-                var strMsg: String? = err.message
-                if nil == strMsg {
-                    if let error = err.error {
-                        strMsg = error.localizedDescription
-                    }
-                }
-                if let _strMsg = strMsg {
-                    self.showError(strMsg: _strMsg)
-                }
+                self.showError(strMsg: err.message)
             }
         }
 

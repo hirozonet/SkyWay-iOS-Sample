@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkyWay
 
 class MediaConnectionViewController: UIViewController, UINavigationControllerDelegate, UIAlertViewDelegate {
 
@@ -70,7 +71,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
         //////////////////////////////////////////////////////////////////////
         ////////////////// START: Get Local Stream   /////////////////////////
         //////////////////////////////////////////////////////////////////////
-        SKWNavigator.initialize(self.peer)
+        SKWNavigator.initialize(self.peer!)
         let constraints: SKWMediaConstraints = SKWMediaConstraints.init()
         constraints.maxWidth = 960
         constraints.maxHeight = 540
@@ -143,7 +144,9 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
         vwLocal.tag = ViewTag.TAG_LOCAL_VIDEO.rawValue
         self.view.addSubview(vwLocal)
 
-        vwLocal.addSrc(self.msLocal, track: 0)
+        if let msLocal = self.msLocal {
+            msLocal.addVideoRenderer(vwLocal, track: 0)
+        }
         //////////////////////////////////////////////////////////////////////
         ////////////  END: Add Remote & Local SKWVideo to View   /////////////
         //////////////////////////////////////////////////////////////////////
@@ -243,7 +246,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
         if let mediaConnection = self.mediaConnection {
             if let msRemote = self.msRemote {
                 if let video: SKWVideo = self.view.viewWithTag(ViewTag.TAG_REMOTE_VIDEO.rawValue) as? SKWVideo {
-                    video.removeSrc(msRemote, track: 0)
+                    msRemote.addVideoRenderer(video, track: 0)
                 }
                 msRemote.close()
                 self.msRemote = nil
@@ -431,7 +434,9 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
                 vwRemote.isHidden = false
                 vwRemote.isUserInteractionEnabled = true
 
-                vwRemote.addSrc(self.msRemote, track: 0)
+                if let msRemote = self.msRemote {
+                    msRemote.addVideoRenderer(vwRemote, track: 0)
+                }
             }
         }
     }
@@ -445,7 +450,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
 
         if let vwRemote: SKWVideo = self.view.viewWithTag(ViewTag.TAG_REMOTE_VIDEO.rawValue) as? SKWVideo {
             if let msRemote = self.msRemote {
-                vwRemote.removeSrc(self.msRemote, track: 0)
+                msRemote.removeVideoRenderer(vwRemote, track: 0)
 
                 msRemote.close()
 
