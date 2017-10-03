@@ -239,7 +239,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
 
     // MARK: - Public method
 
-    internal func callingTo(strDestId: String) {
+    @objc internal func callingTo(strDestId: String) {
         //////////////////////////////////////////////////////////////////////
         //////////////////  START: Connect SkyWay Peer   /////////////////////
         //////////////////////////////////////////////////////////////////////
@@ -282,18 +282,20 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
         
         // !!!: Event/Open
         _peer.on(SKWPeerEventEnum.PEER_EVENT_OPEN) { (obj: NSObject?) in
-            DispatchQueue.main.async {
-                if let strOwnId = obj as? String {
-                    self.strOwnId = strOwnId
+            DispatchQueue.global(qos: .default).async {
+                DispatchQueue.main.async {
+                    if let strOwnId = obj as? String {
+                        self.strOwnId = strOwnId
 
-                    if let lbl: UILabel = self.view.viewWithTag(ViewTag.TAG_ID.rawValue) as? UILabel {
-                        lbl.text = String.init(format: "your ID: \n%@", strOwnId)
-                        lbl.setNeedsDisplay()
+                        if let lbl: UILabel = self.view.viewWithTag(ViewTag.TAG_ID.rawValue) as? UILabel {
+                            lbl.text = String.init(format: "your ID: \n%@", strOwnId)
+                            lbl.setNeedsDisplay()
+                        }
                     }
-                }
-                if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
-                    btn.isEnabled = true
-                    btn.setNeedsDisplay()
+                    if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
+                        btn.isEnabled = true
+                        btn.setNeedsDisplay()
+                    }
                 }
             }
         }
@@ -370,9 +372,11 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
                 strData = String.init(format: "%@", dctData)
             } else if let datData: Data = obj as? Data {
                 if let image: UIImage = UIImage(data: datData) {
-                    DispatchQueue.main.async {
-                        if let ivImg: UIImageView = self.view.viewWithTag(ViewTag.TAG_IMG_VIEW.rawValue) as? UIImageView {
-                            ivImg.image = image
+                    DispatchQueue.global(qos: .default).async {
+                        DispatchQueue.main.async {
+                            if let ivImg: UIImageView = self.view.viewWithTag(ViewTag.TAG_IMG_VIEW.rawValue) as? UIImageView {
+                                ivImg.image = image
+                            }
                         }
                     }
                 }
@@ -422,9 +426,13 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
     // MARK: - Send Data
 
     func updateDataType(type: Int) {
-        if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_DATA_TYPE.rawValue) as? UIButton {
-            let strTitle: String = self.aryDataTypes[type]
-            btn.setTitle(strTitle, for: UIControlState.normal)
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_DATA_TYPE.rawValue) as? UIButton {
+                    let strTitle: String = self.aryDataTypes[type]
+                    btn.setTitle(strTitle, for: UIControlState.normal)
+                }
+            }
         }
 
         if let dataType: DataConnectionViewController.DataType = DataConnectionViewController.DataType(rawValue: type) {
@@ -477,23 +485,25 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
     // MARK: - Utility
 
     func showError(strMsg: String) {
-        DispatchQueue.main.async {
-            if #available(iOS 8.0, *) {
-                // Use UIAlertController
-                let ac: UIAlertController = UIAlertController(title: "Error", message: strMsg, preferredStyle: UIAlertControllerStyle.alert)
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                if #available(iOS 8.0, *) {
+                    // Use UIAlertController
+                    let ac: UIAlertController = UIAlertController(title: "Error", message: strMsg, preferredStyle: UIAlertControllerStyle.alert)
 
-                ac.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.cancel, handler: { (action: UIAlertAction) in
-                    
-                }))
+                    ac.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.cancel, handler: { (action: UIAlertAction) in
+                        
+                    }))
 
-                self.present(ac, animated: true, completion: { () in
-                    
-                })
-            } else {
-                // Use UIAlertView
-                let av: UIAlertView = UIAlertView(title: "Error", message: strMsg, delegate: self, cancelButtonTitle: "Done")
+                    self.present(ac, animated: true, completion: { () in
+                        
+                    })
+                } else {
+                    // Use UIAlertView
+                    let av: UIAlertView = UIAlertView(title: "Error", message: strMsg, delegate: self, cancelButtonTitle: "Done")
 
-                av.show()
+                    av.show()
+                }
             }
         }
     }
@@ -510,41 +520,51 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
             
             vw.removeFromSuperview()
         }
+
+        SKWNavigator.terminate()
+
+        if let peer = self.peer {
+            peer.destroy()
+        }
     }
 
     func updateUI() {
-        DispatchQueue.main.async {
-            var strTitle = "---"
-            if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
-                if !self.bConnected {
-                    strTitle = "Connect to"
-                } else {
-                    strTitle = "Disconnect"
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                var strTitle = "---"
+                if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
+                    if !self.bConnected {
+                        strTitle = "Connect to"
+                    } else {
+                        strTitle = "Disconnect"
+                    }
+
+                    btn.setTitle(strTitle, for: UIControlState.normal)
                 }
 
-                btn.setTitle(strTitle, for: UIControlState.normal)
-            }
+                if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_DATA_TYPE.rawValue) as? UIButton {
+                    btn.isEnabled = self.bConnected
+                }
 
-            if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_DATA_TYPE.rawValue) as? UIButton {
-                btn.isEnabled = self.bConnected
-            }
-
-            if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_SEND_DATA.rawValue) as? UIButton {
-                btn.isEnabled = self.bConnected
+                if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_SEND_DATA.rawValue) as? UIButton {
+                    btn.isEnabled = self.bConnected
+                }
             }
         }
     }
 
     @objc func appendLogWithMessage(strMessage: String) {
-        DispatchQueue.main.async {
-            if let tvLog: UITextView = self.view.viewWithTag(ViewTag.TAG_LOG.rawValue) as? UITextView {
-                var rng: NSRange = NSMakeRange(tvLog.text.characters.count, 0)
-                tvLog.selectedRange = rng
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                if let tvLog: UITextView = self.view.viewWithTag(ViewTag.TAG_LOG.rawValue) as? UITextView {
+                    var rng: NSRange = NSMakeRange(tvLog.text.characters.count, 0)
+                    tvLog.selectedRange = rng
 
-                tvLog.replace(tvLog.selectedTextRange!, withText: strMessage)
+                    tvLog.replace(tvLog.selectedTextRange!, withText: strMessage)
 
-                rng = NSMakeRange(tvLog.text.characters.count, 0)
-                tvLog.scrollRangeToVisible(rng)
+                    rng = NSMakeRange(tvLog.text.characters.count, 0)
+                    tvLog.scrollRangeToVisible(rng)
+                }
             }
         }
     }
@@ -578,7 +598,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
     
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if UINavigationControllerOperation.pop == operation {
-            if fromVC.isKind(of: MediaConnectionViewController.self) {
+            if fromVC.isKind(of: DataConnectionViewController.self) {
                 self.performSelector(onMainThread: #selector(self.clearViewController), with: nil, waitUntilDone: false)
                 navigationController.delegate = nil
             }
@@ -614,8 +634,10 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
                             vc.callback = self
                             
                             let nc: UINavigationController = UINavigationController(rootViewController: vc)
-                            DispatchQueue.main.async {
-                                self.present(nc, animated: true, completion: nil)
+                            DispatchQueue.global(qos: .default).async {
+                                DispatchQueue.main.async {
+                                    self.present(nc, animated: true, completion: nil)
+                                }
                             }
                             
                             maItems.removeAll()
@@ -623,7 +645,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
                     }
                 } else {
                     // Closing chat
-                    self.performSelector(inBackground: #selector(self.closeChat), with: nil)
+                    self.performSelector(onMainThread: #selector(self.closeChat), with: nil, waitUntilDone: false)
                 }
             } else if ViewTag.TAG_DATA_TYPE.rawValue == btn.tag {
                 if #available(iOS 8.0, *) {

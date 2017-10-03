@@ -230,7 +230,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
     
     // MARK: - Public method
 
-    internal func callingTo(strDestId: String) {
+    @objc internal func callingTo(strDestId: String) {
         //////////////////////////////////////////////////////////////////////
         ////////////////// START: Call SkyWay Peer   /////////////////////////
         //////////////////////////////////////////////////////////////////////
@@ -276,17 +276,19 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
 
         // !!!: Event/Open
         _peer.on(SKWPeerEventEnum.PEER_EVENT_OPEN, callback: { (obj: NSObject?) in
-            DispatchQueue.main.async {
-                if let strOwnId = obj as? String {
-                    self.strOwnId = strOwnId
+            DispatchQueue.global(qos: .default).async {
+                DispatchQueue.main.async {
+                    if let strOwnId = obj as? String {
+                        self.strOwnId = strOwnId
 
-                    if let lbl: UILabel = self.view.viewWithTag(ViewTag.TAG_ID.rawValue) as? UILabel {
-                        lbl.text = String.init(format: "your ID: \n%@", strOwnId)
-                        lbl.setNeedsDisplay()
-                    }
+                        if let lbl: UILabel = self.view.viewWithTag(ViewTag.TAG_ID.rawValue) as? UILabel {
+                            lbl.text = String.init(format: "your ID: \n%@", strOwnId)
+                            lbl.setNeedsDisplay()
+                        }
 
-                    if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
-                        btn.isEnabled = true
+                        if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
+                            btn.isEnabled = true
+                        }
                     }
                 }
             }
@@ -419,7 +421,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
     }
 
     func setRemoteView(stream: SKWMediaStream) {
-        if (self.bConnected) {
+        if self.bConnected {
             return
         }
 
@@ -429,36 +431,40 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
 
         self.updateActionButtonTitle()
 
-        DispatchQueue.main.async {
-            if let vwRemote: SKWVideo = self.view.viewWithTag(ViewTag.TAG_REMOTE_VIDEO.rawValue) as? SKWVideo {
-                vwRemote.isHidden = false
-                vwRemote.isUserInteractionEnabled = true
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                if let vwRemote: SKWVideo = self.view.viewWithTag(ViewTag.TAG_REMOTE_VIDEO.rawValue) as? SKWVideo {
+                    vwRemote.isHidden = false
+                    vwRemote.isUserInteractionEnabled = true
 
-                if let msRemote = self.msRemote {
-                    msRemote.addVideoRenderer(vwRemote, track: 0)
+                    if let msRemote = self.msRemote {
+                        msRemote.addVideoRenderer(vwRemote, track: 0)
+                    }
                 }
             }
         }
     }
 
     func unsetRemoteView() {
-        if (!self.bConnected) {
+        if !self.bConnected {
             return
         }
 
         self.bConnected = false
 
-        if let vwRemote: SKWVideo = self.view.viewWithTag(ViewTag.TAG_REMOTE_VIDEO.rawValue) as? SKWVideo {
-            if let msRemote = self.msRemote {
-                msRemote.removeVideoRenderer(vwRemote, track: 0)
-
-                msRemote.close()
-
-                self.msRemote = nil
-            }
+        DispatchQueue.global(qos: .default).async {
             DispatchQueue.main.async {
-                vwRemote.isUserInteractionEnabled = false
-                vwRemote.isHidden = true
+                if let vwRemote: SKWVideo = self.view.viewWithTag(ViewTag.TAG_REMOTE_VIDEO.rawValue) as? SKWVideo {
+                    if let msRemote = self.msRemote {
+                        msRemote.removeVideoRenderer(vwRemote, track: 0)
+
+                        msRemote.close()
+
+                        self.msRemote = nil
+                    }
+                    vwRemote.isUserInteractionEnabled = false
+                    vwRemote.isHidden = true
+                }
             }
         }
 
@@ -466,15 +472,17 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
     }
 
     func updateActionButtonTitle() {
-        DispatchQueue.main.async {
-            if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
-                var strTitle: String = "---"
-                if (!self.bConnected) {
-                    strTitle = "Call to"
-                } else {
-                    strTitle = "End call"
+        DispatchQueue.global(qos: .default).async {
+            DispatchQueue.main.async {
+                if let btn: UIButton = self.view.viewWithTag(ViewTag.TAG_WEBRTC_ACTION.rawValue) as? UIButton {
+                    var strTitle: String = "---"
+                    if !self.bConnected {
+                        strTitle = "Call to"
+                    } else {
+                        strTitle = "End call"
+                    }
+                    btn.setTitle(strTitle, for: UIControlState.normal)
                 }
-                btn.setTitle(strTitle, for: UIControlState.normal)
             }
         }
     }
@@ -519,8 +527,10 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
                             vc.callback = self
 
                             let nc: UINavigationController = UINavigationController(rootViewController: vc)
-                            DispatchQueue.main.async {
-                                self.present(nc, animated: true, completion: nil)
+                            DispatchQueue.global(qos: .default).async {
+                                DispatchQueue.main.async {
+                                    self.present(nc, animated: true, completion: nil)
+                                }
                             }
 
                             maItems.removeAll()
@@ -528,7 +538,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
                     }
                 } else {
                     // Closing chat
-                    self.performSelector(inBackground: #selector(self.closeChat), with: nil)
+                    self.performSelector(onMainThread: #selector(self.closeChat), with: nil, waitUntilDone: false)
                 }
             }
         }
