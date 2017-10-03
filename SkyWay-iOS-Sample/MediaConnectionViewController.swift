@@ -242,7 +242,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
         //////////////////////////////////////////////////////////////////////
     }
 
-    func closeChat() {
+    @objc func closeChat() {
         if let mediaConnection = self.mediaConnection {
             if let msRemote = self.msRemote {
                 if let video: SKWVideo = self.view.viewWithTag(ViewTag.TAG_REMOTE_VIDEO.rawValue) as? SKWVideo {
@@ -371,7 +371,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
         _media.on(SKWMediaConnectionEventEnum.MEDIACONNECTION_EVENT_ERROR, callback: nil)
     }
 
-    func cycleLocalCamera() {
+    @objc func cycleLocalCamera() {
         guard let msLocal = self.msLocal else {
             return
         }
@@ -389,7 +389,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
 
     // MARK: - Utility
 
-    func clearViewController() {
+    @objc func clearViewController() {
         self.clearMediaCallbacks(media: self.mediaConnection)
 
         self.closeChat()
@@ -493,7 +493,7 @@ class MediaConnectionViewController: UIViewController, UINavigationControllerDel
     
     // MARK: - UIButtonActionDelegate
     
-    func onTouchUpInside(_ sender: Any) {
+    @objc func onTouchUpInside(_ sender: Any) {
         if let btn: UIButton = sender as? UIButton {
             if (ViewTag.TAG_WEBRTC_ACTION.rawValue == btn.tag) {
                 if (nil == self.mediaConnection) {

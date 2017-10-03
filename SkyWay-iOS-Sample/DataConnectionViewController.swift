@@ -258,7 +258,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
         //////////////////////////////////////////////////////////////////////
     }
 
-    func closeChat() {
+    @objc func closeChat() {
         if let dataConnection = self.dataConnection {
             dataConnection.close()
         }
@@ -498,7 +498,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
         }
     }
 
-    func clearViewController() {
+    @objc func clearViewController() {
         self.closeChat()
 
         self.clearCallbacks(peer: self.peer)
@@ -535,7 +535,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
         }
     }
 
-    func appendLogWithMessage(strMessage: String) {
+    @objc func appendLogWithMessage(strMessage: String) {
         DispatchQueue.main.async {
             if let tvLog: UITextView = self.view.viewWithTag(ViewTag.TAG_LOG.rawValue) as? UITextView {
                 var rng: NSRange = NSMakeRange(tvLog.text.characters.count, 0)
@@ -588,7 +588,7 @@ class DataConnectionViewController: UIViewController, UINavigationControllerDele
     
     // MARK: - UIButtonActionDelegate
     
-    func onTouchUpInside(_ sender: Any) {
+    @objc func onTouchUpInside(_ sender: Any) {
         if let btn: UIButton = sender as? UIButton {
             if ViewTag.TAG_WEBRTC_ACTION.rawValue == btn.tag {
                 if nil == self.dataConnection {

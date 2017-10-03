@@ -70,7 +70,7 @@ class MenuViewController: UIViewController {
 
 // MARK: -
 
-    func touchUpInside(_ sender: Any) {
+    @objc func touchUpInside(_ sender: Any) {
         if let btn: UIButton = sender as? UIButton {
             var vc: UIViewController? = nil
             if ViewTag.BTN_VIDEOCHAT.rawValue == btn.tag {

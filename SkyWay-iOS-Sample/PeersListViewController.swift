@@ -111,7 +111,7 @@ class PeersListViewController: UITableViewController {
 
     // MARK: -
 
-    func cancel() {
+    @objc func cancel() {
         if let callback = self.callback {
             callback.dismiss(animated: true, completion: nil)
         } else {
