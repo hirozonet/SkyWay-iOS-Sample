@@ -102,6 +102,10 @@ class PeersListViewController: UITableViewController {
                     if mcvc.responds(to: #selector(mcvc.callingTo(strDestId:))) {
                         mcvc.performSelector(inBackground: #selector(mcvc.callingTo(strDestId:)), with: strTo)
                     }
+                } else if let icvc: IotConnectionViewController = callback as? IotConnectionViewController {
+                    if icvc.responds(to: #selector(icvc.callingTo(strDestId:))) {
+                        icvc.performSelector(inBackground: #selector(icvc.callingTo(strDestId:)), with: strTo)
+                    }
                 }
             })
         } else {

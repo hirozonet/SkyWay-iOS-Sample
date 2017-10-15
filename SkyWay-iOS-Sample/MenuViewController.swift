@@ -13,6 +13,7 @@ class MenuViewController: UIViewController {
     enum ViewTag: Int {
         case BTN_VIDEOCHAT
         case BTN_CHAT
+        case BTN_IOT
     }
     
     override func viewDidLoad() {
@@ -61,6 +62,23 @@ class MenuViewController: UIViewController {
         btnChat.addTarget(self, action: #selector(self.touchUpInside(_:)), for: UIControlEvents.touchUpInside)
         
         self.view.addSubview(btnChat)
+
+        // Iot
+        rcDesign = CGRect.zero
+        rcDesign.origin.y = fButtonHeight * 3.0
+        rcDesign.size.width = rcClient.size.width
+        rcDesign.size.height = fButtonHeight
+        
+        let rcIot: CGRect = rcDesign.insetBy(dx: 8.0, dy: 4.0)
+        
+        let btnIot: UIButton = UIButton(type: .roundedRect)
+        btnIot.tag = ViewTag.BTN_IOT.rawValue
+        btnIot.setTitle("Iot connection", for: UIControlState.normal)
+        btnIot.backgroundColor = UIColor.lightGray
+        btnIot.frame = rcIot
+        btnIot.addTarget(self, action: #selector(self.touchUpInside(_:)), for: UIControlEvents.touchUpInside)
+        
+        self.view.addSubview(btnIot)
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,6 +101,11 @@ class MenuViewController: UIViewController {
                 let strTitle: String = "DataConnection"
                 vcChat.navigationItem.title = strTitle
                 vc = vcChat
+            } else if ViewTag.BTN_IOT.rawValue == btn.tag {
+                let vcIot: IotConnectionViewController = IotConnectionViewController(nibName: nil, bundle: Bundle.main)
+                let strTitle: String = "IotConnection"
+                vcIot.navigationItem.title = strTitle
+                vc = vcIot
             }
 
             if nil != vc {

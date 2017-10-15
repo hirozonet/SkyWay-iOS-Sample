@@ -31,6 +31,7 @@
 		1744EA701F4D78730041887B /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1744EA6C1F4D78730041887B /* MenuViewController.swift */; };
 		1744EA711F4D78730041887B /* PeersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1744EA6D1F4D78730041887B /* PeersListViewController.swift */; };
 		1744EA761F4D79710041887B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1744EA741F4D79710041887B /* LaunchScreen.xib */; };
+		17E7FF7C1F932A64002D5FF3 /* IotConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E7FF7B1F932A64002D5FF3 /* IotConnectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,6 +74,7 @@
 		1744EA6C1F4D78730041887B /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		1744EA6D1F4D78730041887B /* PeersListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeersListViewController.swift; sourceTree = "<group>"; };
 		1744EA751F4D79710041887B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		17E7FF7B1F932A64002D5FF3 /* IotConnectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IotConnectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				1744EA6B1F4D78730041887B /* MediaConnectionViewController.swift */,
 				1744EA6C1F4D78730041887B /* MenuViewController.swift */,
 				1744EA6D1F4D78730041887B /* PeersListViewController.swift */,
+				17E7FF7B1F932A64002D5FF3 /* IotConnectionViewController.swift */,
 				1744EA741F4D79710041887B /* LaunchScreen.xib */,
 				1744EA3D1F4D74900041887B /* Main.storyboard */,
 				1744EA721F4D78C50041887B /* Supporting Files */,
@@ -242,6 +245,7 @@
 				1744EA3A1F4D74900041887B /* AppDelegate.swift in Sources */,
 				1744EA6F1F4D78730041887B /* MediaConnectionViewController.swift in Sources */,
 				1744EA701F4D78730041887B /* MenuViewController.swift in Sources */,
+				17E7FF7C1F932A64002D5FF3 /* IotConnectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
